@@ -43,7 +43,7 @@ server.post('/accounts', (req, res) => {
         })
     })}
 })
-
+//DELETE
 server.delete('/accounts/:id', (req, res) => {
     const {id} = req.params;
     db.remove(id)
@@ -63,5 +63,35 @@ server.delete('/accounts/:id', (req, res) => {
         })
     })
 });
+
+//UPDATE
+
+server.put('/accounts/:id', (req, res) => {
+    const changes = req.body;
+    const {name, budget} = req.body;
+    const {id} = req.params;
+    if (!name || !budget ) {
+        res.status(400).json({ 
+            errorMessage: "Please provide name and budget for the user." 
+        })
+    }
+    else {
+    db.update(id, changes)
+    .then(updated => {
+        if (updated) {
+            res.status(200).json(updated)
+        } else {
+            res.status(404).json({
+                message: "The user with the specified ID does not exist."
+            })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({
+            error: "The user information could not be modified."
+        })
+    })
+}
+})
 
 module.exports = server;
