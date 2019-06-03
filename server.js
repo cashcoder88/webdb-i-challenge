@@ -6,6 +6,7 @@ server.use(express.json());
 
 // your code here
 
+//GET
 server.get('/accounts', (req, res) => {
     db.find()
     .then(account => {
@@ -19,6 +20,8 @@ server.get('/accounts', (req, res) => {
         });
     });
 });
+
+//POST
 
 server.post('/accounts', (req, res) => {
     const {name, budget} = req.body;
@@ -40,5 +43,25 @@ server.post('/accounts', (req, res) => {
         })
     })}
 })
+
+server.delete('/accounts/:id', (req, res) => {
+    const {id} = req.params;
+    db.remove(id)
+    .then(deleted => {
+        if (deleted) {
+            res.status(204).end();
+        }
+        else {
+            res.status(404).json({
+                message: "The user with the specified ID does not exist."
+            })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({
+            errorMessage: 'The account could not be removed'
+        })
+    })
+});
 
 module.exports = server;
