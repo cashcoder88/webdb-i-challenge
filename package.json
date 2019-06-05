@@ -10,6 +10,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "knex": "^0.17.3",
+    "server": "^1.0.18",
     "sqlite3": "^4.0.8"
   },
   "devDependencies": {
